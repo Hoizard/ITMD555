@@ -71,7 +71,9 @@ public class RegisterActivity extends AppCompatActivity {
                     companyname = companyname_EditTxt.getText().toString();
                 }
 
+                //If company name, full name, and password are empty, then output toast - Please enter all items to register
                 if (companyname.length() != 0 && fullname.length() != 0 && username.length() !=0 && password.length() != 0) {
+                    //If data added to fields, add to fields called companyname, fullname, username, password, usertype
                     if (mDatabaseHelper.viewData(username) != null) {
                         Cursor cursor = mDatabaseHelper.viewData(username);
                         if (cursor.getCount() > 0) {
@@ -80,6 +82,7 @@ public class RegisterActivity extends AppCompatActivity {
                             {
                                 cursor.close();
                             }
+                            //Close
                         } else {
                             if (!cursor.isClosed())
                             {
@@ -108,6 +111,7 @@ public class RegisterActivity extends AppCompatActivity {
         startActivity(mainIntent);
     }
 
+    //Method to add data to table
     public void AddData(String company, String fullname, String username, String password, String usertype) {
         boolean insertData = mDatabaseHelper.addData(company, fullname, username, password, usertype);
         if(insertData) {
@@ -125,6 +129,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    //Method for Toast
     private  void toastMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }

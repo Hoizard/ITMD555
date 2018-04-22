@@ -20,6 +20,7 @@ import com.example.erickcruz.finalproject.GlobalApplication;
 
 public class LoginActivity extends AppCompatActivity {
 
+    //listing buttons, edit text and text views
     UserDatabaseHelper mDatabaseHelper;
     private EditText username_EditTxt, password_EditTxt;
     private Button loginBtn;
@@ -30,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //setting up methods
         this.initUI();
         this.setControlEvents();
     }
@@ -43,6 +45,8 @@ public class LoginActivity extends AppCompatActivity {
 
         mDatabaseHelper = new UserDatabaseHelper(this);
 
+        //If user clicks on Administrator or Employer button, the text of the login
+        //screen will change according to button that they have clicked
         if (GlobalApplication.typeStr == "Administrator") {
             typeTextView.setText("Login as Administrator.");
         } else if (GlobalApplication.typeStr == "Employer") {
@@ -55,10 +59,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                //Capturing string that user inputs
                 String username = username_EditTxt.getText().toString();
                 String password = password_EditTxt.getText().toString();
 
+                //If username and password is blank, send toast of making sure the fields are filled
                 if (username.length() !=0 && password.length() != 0) {
+                    //If there is data input, then fill out columns of database
                     if (mDatabaseHelper.viewData(username) != null) {
                         Cursor cursor = mDatabaseHelper.viewData(username);
                         cursor.moveToFirst();
@@ -67,37 +74,47 @@ public class LoginActivity extends AppCompatActivity {
                         String usernameStr = cursor.getString(cursor.getColumnIndex(UserDatabaseHelper.COL3));
                         String passwordStr = cursor.getString(cursor.getColumnIndex(UserDatabaseHelper.COL4));
                         String usertypeStr = cursor.getString(cursor.getColumnIndex(UserDatabaseHelper.COL5));
+                        //Close database
                         if (!cursor.isClosed())
                         {
                             cursor.close();
                         }
 
+                        //If the username and password match the database
                         if (GlobalApplication.typeStr.equals(usertypeStr) ) {
+                            //
                             if (password.equals(passwordStr)) {
                                 GlobalApplication.companyName = companyStr;
                                 GlobalApplication.nameStr = fullnameStr;
                                 GlobalApplication.userName = usernameStr;
                                 GlobalApplication.password = passwordStr;
+                                //If user matches database as Administrator, show job posting screen
                                 if (GlobalApplication.typeStr == "Administrator") {
                                     gotoJobPostScreen();
+                                    //If user matches database as Employer, show job viewing screen
                                 } else if (GlobalApplication.typeStr == "Employer") {
                                     gotoJobViewScreen();
                                 }
+                                //If username and password does not match database
                             } else {
                                 toastMessage("User Name and Password Wrong.");
                             }
+                            //If username and password does not match database
                         } else {
                             toastMessage("User Name and Password Wrong.");
                         }
+                        //If username and password does not match database
                     } else {
                         toastMessage("User Name and Password Wrong.");
                     }
+                    //If username and password is not filled out
                 } else {
                     toastMessage("Please enter the user name and password.");
                 }
             }
         });
 
+        //User clicks on registering link, sends to Register screen
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,21 +123,25 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    //Intent to send to next Activity
     private void gotoJobPostScreen() {
         Intent mainIntent = new Intent(LoginActivity.this, JobPostActivity.class);
         startActivity(mainIntent);
     }
 
+    //Intent to send to next Activity
     private void gotoJobViewScreen() {
         Intent mainIntent = new Intent(LoginActivity.this, JobViewActivity.class);
         startActivity(mainIntent);
     }
 
+    //Intent to send to next Activity
     private void gotoRegisterScreen() {
         Intent mainIntent = new Intent(LoginActivity.this, RegisterActivity.class);
         startActivity(mainIntent);
     }
 
+    //Toast message method
     private  void toastMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }

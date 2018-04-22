@@ -27,11 +27,10 @@ public class JobViewActivity extends AppCompatActivity {
         noJobsTextView = (TextView)findViewById(R.id.noJobsTextView);
         jobListView = (ListView)findViewById(R.id.jobListView);
 
+        // Show the jobs in ListView
         if (GlobalApplication.jobArray != null) {
             jobListView.setVisibility(View.VISIBLE);
             noJobsTextView.setVisibility(View.INVISIBLE);
-
-            // Show the jobs in ListView
 
 
         } else {

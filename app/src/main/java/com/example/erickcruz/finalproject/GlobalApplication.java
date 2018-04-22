@@ -11,6 +11,8 @@ public class GlobalApplication extends Application {
     public static String userName = "";
     public static String password = "";
     public static String nameStr = "";
+    public static String jobTitle = "";
+    public static String jobDescription = "";
 
     public static Array jobArray = null;
 }

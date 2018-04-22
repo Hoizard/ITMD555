@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
-
+    //importing buttons for main screen
     private Button administratorBtn, employerBtn;
 
     @Override
@@ -15,15 +15,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //methods
         this.initUI();
         this.setControlEvents();
     }
 
+    //method that grabs buttons
     private void initUI() {
         administratorBtn = (Button)findViewById(R.id.employerBtn);
         employerBtn = (Button)findViewById(R.id.userBtn);
     }
 
+    //
     private  void setControlEvents() {
         administratorBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //Sending to next activity class with view
     private void gotoLoginScreen(){
         Intent mainIntent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(mainIntent);
