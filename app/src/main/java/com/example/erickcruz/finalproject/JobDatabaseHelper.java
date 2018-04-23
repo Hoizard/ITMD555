@@ -32,6 +32,7 @@ public class JobDatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    //Method to insert information into the table
     public boolean addData(String companyStr, String fullnameStr, String jobTitle, String jobDescription) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -49,10 +50,11 @@ public class JobDatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public Cursor getJobDescription(String username) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor data = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
-        return data;
-
+    //Method to get all the information off the database table to output to the user
+    public Cursor getAllRows(SQLiteDatabase sqLiteDatabase){
+        String[] ALL_COLS = {COL1, COL3, COL4};
+        Cursor c;
+        c = sqLiteDatabase.query(TABLE_NAME, ALL_COLS, null, null, null, null, null);
+        return c;
     }
 }

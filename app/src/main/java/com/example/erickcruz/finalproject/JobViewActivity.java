@@ -1,42 +1,47 @@
 package com.example.erickcruz.finalproject;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.ListView;
-import android.widget.TextView;
-
-import com.example.erickcruz.finalproject.R;
-import com.example.erickcruz.finalproject.GlobalApplication;
 
 public class JobViewActivity extends AppCompatActivity {
 
+    //Created objects
     private ListView jobListView;
-    private TextView noJobsTextView;
+    SQLiteDatabase sqLiteDatabase;
+    JobDatabaseHelper myDb;
+    Cursor c;
+    JobViewAdapter jobViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jobview);
 
-        this.initUI();
-
-    }
-
-    private void initUI() {
-        noJobsTextView = (TextView)findViewById(R.id.noJobsTextView);
+        //Initializing the objects
         jobListView = (ListView)findViewById(R.id.jobListView);
+        jobViewAdapter = new JobViewAdapter(getApplicationContext(),R.layout.activity_jobdescription);
+        jobListView.setAdapter(jobViewAdapter);
+        myDb = new JobDatabaseHelper(getApplicationContext());
+        sqLiteDatabase = myDb.getReadableDatabase();
 
-        // Show the jobs in ListView
-        if (GlobalApplication.jobArray != null) {
-            jobListView.setVisibility(View.VISIBLE);
-            noJobsTextView.setVisibility(View.INVISIBLE);
+        //Getting information from the database by initializing the database, passing the sqLiteDatabase
+        c = myDb.getAllRows(sqLiteDatabase);
 
+        //Analyzing the cursor, making sure there is information
+        if(c.moveToFirst()){
+            do {
+                String companyName, jobTitle, jobDescription;
+                companyName = c.getString(0);
+                jobTitle = c.getString(1);
+                jobDescription = c.getString(2);
 
-        } else {
-            jobListView.setVisibility(View.INVISIBLE);
-            noJobsTextView.setVisibility(View.VISIBLE);
+                DataProvider dataProvider = new DataProvider(companyName, jobTitle, jobDescription);
+                jobViewAdapter.add(dataProvider);
+
+            }while(c.moveToNext());
         }
     }
-
 }

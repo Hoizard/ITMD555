@@ -33,6 +33,6 @@
         android:layout_alignStart="@+id/companyname"
         android:layout_marginTop="106dp"
         android:gravity="center"
-        android:text="jobTitle" />
+        android:text="Job Title" />
 
 </RelativeLayout>
